@@ -117,19 +117,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <distributionManagement>
-        <repository>
-            <id>yuanzhixiang-releases</id>
-            <name>Releases</name>
-            <url>https://nexus.yuanzhixiang.com/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>yuanzhixiang-snapshots</id>
-            <name>Snapshot</name>
-            <url>https://nexus.yuanzhixiang.com/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <build>
         <pluginManagement>
             <plugins>
