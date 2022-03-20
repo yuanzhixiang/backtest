@@ -78,11 +78,12 @@ public class Local<L extends LocalVariable, V> {
      * Removes the current thread's value for this thread-local
      * variable.  If this thread-local variable is subsequently
      * {@linkplain #get read} by the current thread, its value will be
-     * reinitialized by invoking its {@link #} method,
+     * reinitialized by invoking its method,
      * unless its value is {@linkplain #set set} by the current thread
      * in the interim.  This may result in multiple invocations of the
      * {@code initialValue} method in the current thread.
      *
+     * @param localVariable local variable
      * @since 1.5
      */
     public void remove(L localVariable) {

@@ -20,13 +20,13 @@ import com.yuanzhixiang.bt.domain.model.valobj.OrderValObj;
 import com.yuanzhixiang.bt.domain.model.valobj.Symbol;
 import com.yuanzhixiang.bt.domain.model.valobj.position.Position;
 import com.yuanzhixiang.bt.domain.model.valobj.position.PositionRealAdjustment;
+import com.yuanzhixiang.bt.domain.repository.CloseableIterator;
 import com.yuanzhixiang.bt.domain.repository.IteratorWrapper;
 import com.yuanzhixiang.bt.engine.Configuration;
 import com.yuanzhixiang.bt.engine.Local;
 import com.yuanzhixiang.bt.engine.SideEnum;
 import com.yuanzhixiang.bt.exception.BackTestException;
 import com.yuanzhixiang.bt.factor.variant.PeriodFactorDaily;
-import com.yuanzhixiang.bt.domain.repository.CloseableIterator;
 import com.yuanzhixiang.bt.kit.SymbolUtil;
 
 import lombok.Getter;
@@ -75,6 +75,8 @@ public class SecuritiesExchangeAggregate {
      * @param tradeTime  trade time
      * @param price      buy price
      * @param percentage percentage of position, range in (0, 1]
+     * @param remark     remark
+     * @return returns the position if the buy is successful, otherwise null
      */
     public synchronized Position buy(Symbol symbol, LocalDateTime tradeTime, double price, double percentage, String remark) {
         if (percentage > 1 || percentage <= 0) {
@@ -97,6 +99,8 @@ public class SecuritiesExchangeAggregate {
      * @param tradeTime trade time
      * @param price     buy price
      * @param quantity  buy in quantity
+     * @param remark    remark
+     * @return returns the position if the buy is successful, otherwise null
      */
     public synchronized Position buySpecifiedQuantity(Symbol symbol, LocalDateTime tradeTime, double price,
         int quantity, String remark) {
@@ -148,6 +152,7 @@ public class SecuritiesExchangeAggregate {
      * @param tradeTime  trade time
      * @param price      sell price
      * @param percentage percentage of position, range in (0, 1]
+     * @param remark     remark
      */
     public synchronized void sell(Symbol symbol, LocalDateTime tradeTime, double price, double percentage, String remark) {
         if (percentage > 1 || percentage <= 0) {

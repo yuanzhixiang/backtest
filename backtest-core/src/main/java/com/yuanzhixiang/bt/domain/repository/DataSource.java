@@ -13,9 +13,10 @@ public interface DataSource {
     /**
      * Query Factors
      *
-     * @param start Start date
-     * @param end   End date
-     * @return Factors
+     * @param symbol symbol
+     * @param start  start date
+     * @param end    end date
+     * @return factors
      */
     CloseableIterator<Factors> queryFactors(Symbol symbol, LocalDateTime start, LocalDateTime end);
 }
