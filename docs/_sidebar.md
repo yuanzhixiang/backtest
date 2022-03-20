@@ -1,4 +1,4 @@
-* [Home](/)
+[comment]: <> (* [Home]&#40;/&#41;)
 
 [comment]: <> (* [快速上手]&#40;/zh-cn/quick-start.md&#41;)
 * [配置项](/zh-cn/configuration.md)
