@@ -33,7 +33,7 @@ public class StartStrategy {
         configuration.setAccountBalance(1000000);
         // 开启 T+1 交易限制
         configuration.setTodayAddOneTrade(true);
-        // 注册回测报告
+        // 注册回测报告，回测完成后会在用户 Desktop 目录下创建回测报告
         configuration.registerLifeCycle(new DefaultReporter());
 
         // 设置回测时间范围
