@@ -1,0 +1,33 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Application
+
+interface Strategy
+
+'todo account 在 context 内并有下单和平仓的方法
+'todo 数据来源抽象为接口
+'todo 指标计算抽象成接口
+
+interface DataSource
+
+class Position {
+    symbol : Symbol # 标的编码
+    quantity : int # 持仓数量
+    buyInFee : double # 买入所花的费用，todo 这个字段是否有必要存
+    costPrice : double # 成本价
+    frozenQuantity: int # 冻结数量
+}
+
+class Statistic
+
+class Account
+
+class SecuritiesExchange
+
+' The broker is to charge fees
+Account *-- Position
+Account *-- Statistic
+SecuritiesExchange *-- Account
+
+@enduml

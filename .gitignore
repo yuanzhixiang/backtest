@@ -1,0 +1,95 @@
+# Gradle
+
+.gradle/
+build/
+/**/build/
+gradle/
+gradlew
+gradlew.bat
+
+# Maven
+
+target/
+/**/target/
+!.mvn/libraryWrapper/maven-libraryWrapper.jar
+
+# MacOS
+
+.DS_Store
+/**/.DS_Store
+
+# Nodejs
+
+node_modules/
+/**/node_modules/
+/**/*.js.map
+pnpm-lock.yaml
+
+# STS
+
+.apt_generated
+/**/.apt_generated
+.classpath
+/**/.classpath
+.factorypath
+/**/.factorypath
+.project
+/**/.project
+.settings
+/**/.settings
+.springBeans
+/**/.springBeans
+*.class
+/**/*.class
+/**/WEB-INF/classes/
+
+# IntelliJ IDEA
+
+.idea/
+/**/.idea/
+*.iws
+/**/*.iws
+*.iml
+/**/*.iml
+*.ipr
+/**/*.ipr
+*.orig
+/**/*.orig
+
+# NetBeans
+
+nbproject/private/
+/**/nbproject/private/
+nbbuild/
+/**/nbbuild/
+nbdist/
+/**/nbdist/
+.nb-gradle/
+/**/.nb-gradle/
+
+# Other
+
+/__MACOSX/
+mybatis-generator.bat
+buildProd.bat
+catalina.base_IS_UNDEFINED
+/logs/
+*.log
+
+# web-project
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# production
+dist/
+tmp/
+lib/
+
+# misc
+.happypack
+*.swp
+*.dia~
+.ice
+.vscode
+index.module.scss.d.ts
