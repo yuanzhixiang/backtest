@@ -7,9 +7,11 @@
         <artifactId>backtest</artifactId>
         <version>1.0.0</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>backtest-example</artifactId>
+    <version>1.0.0</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -19,7 +21,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.yuanzhixiang</groupId>
+            <groupId>com.yuanzhixiang.bt</groupId>
             <artifactId>backtest-core</artifactId>
         </dependency>
 

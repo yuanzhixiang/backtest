@@ -33,13 +33,13 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.yuanzhixiang</groupId>
+                <groupId>com.yuanzhixiang.bt</groupId>
                 <artifactId>backtest-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yuanzhixiang</groupId>
-                <artifactId>backtest-tdx</artifactId>
+                <groupId>com.yuanzhixiang.bt</groupId>
+                <artifactId>backtest-example</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
