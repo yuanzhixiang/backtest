@@ -12,4 +12,4 @@ https://bt.yuanzhixiang.com/
 
 # 微信交流群
 
-[](https://github.com/yuanzhixiang/backtest/blob/main/docs/zh-cn/image/3.png?raw=true)
+![](https://github.com/yuanzhixiang/backtest/blob/main/docs/zh-cn/image/3.png?raw=true)
