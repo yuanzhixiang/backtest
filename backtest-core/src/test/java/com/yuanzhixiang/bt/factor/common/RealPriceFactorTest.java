@@ -9,13 +9,13 @@
 //
 //import org.junit.Test;
 //
-//import com.yuanzhixiang.bt.domain.model.valobj.Symbol;
+//import com.yuanzhixiang.bt.engine.domain.Symbol;
 //import com.yuanzhixiang.bt.engine.Application;
 //import com.yuanzhixiang.bt.engine.Configuration;
 //import com.yuanzhixiang.bt.factor.common.RealPriceFactor.RealPrice;
 //
 ///**
-// * @author yuanzhixiang
+// * @author Yuan Zhixiang
 // */
 //public class RealPriceFactorTest {
 //

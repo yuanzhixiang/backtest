@@ -6,9 +6,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.function.Supplier;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
-import com.yuanzhixiang.bt.domain.model.valobj.Price;
-import com.yuanzhixiang.bt.engine.Context;
+import com.yuanzhixiang.bt.engine.domain.Factors;
+import com.yuanzhixiang.bt.engine.domain.Price;
+import com.yuanzhixiang.bt.service.ContextService;
 import com.yuanzhixiang.bt.engine.ContextLocal;
 import com.yuanzhixiang.bt.engine.Local;
 import com.yuanzhixiang.bt.engine.Local.SuppliedLocal;
@@ -16,7 +16,7 @@ import com.yuanzhixiang.bt.factor.common.RealPriceFactor.RealPrice;
 import com.yuanzhixiang.bt.kit.BigDecimalConstants;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class FactorRsi implements Factor {
 
@@ -69,7 +69,7 @@ public class FactorRsi implements Factor {
         this.duration = duration;
     }
 
-    static Supplier<Rsi> getSupplier(Context context, Factors specific, int duration) {
+    static Supplier<Rsi> getSupplier(ContextService contextService, Factors specific, int duration) {
         return () -> {
             Rsi rsiValue = VALUE.get(specific);
             if (rsiValue != null) {
@@ -80,7 +80,7 @@ public class FactorRsi implements Factor {
             Rsi pRsi = FactorRsi.get(specific, -1);
             if (pRsi != null) {
                 RealPrice realPrice = RealPriceFactor.get(specific);
-                RealPrice pRealPrice = RealPriceFactor.get(context.getFactors(specific.getIdentity(), -1));
+                RealPrice pRealPrice = RealPriceFactor.get(contextService.getFactors(specific.getIdentity(), -1));
 
                 BigDecimal diff = valueOf(realPrice.getClose()).subtract(valueOf(pRealPrice.getClose()));
 
@@ -125,8 +125,8 @@ public class FactorRsi implements Factor {
             BigDecimal up = BigDecimal.ZERO;
             BigDecimal down = BigDecimal.ZERO;
             for (int offset = duration * -1 + 1; offset <= 0; offset++) {
-                Factors factor = context.getFactors(specific.getIdentity(), offset);
-                Factors pFactor = context.getFactors(specific.getIdentity(), offset - 1);
+                Factors factor = contextService.getFactors(specific.getIdentity(), offset);
+                Factors pFactor = contextService.getFactors(specific.getIdentity(), offset - 1);
 
                 if (pFactor == null || factor == null) {
                     return null;
@@ -159,8 +159,8 @@ public class FactorRsi implements Factor {
     private final int duration;
 
     @Override
-    public void bind(Context context, Factors factors) {
-        RSI.setSupplier(factors, getSupplier(context, factors, duration));
+    public void bind(ContextService contextService, Factors factors) {
+        RSI.setSupplier(factors, getSupplier(contextService, factors, duration));
         RSI.get(factors);
     }
 }

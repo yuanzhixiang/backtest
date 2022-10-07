@@ -1,7 +1,7 @@
 package com.yuanzhixiang.bt.factor.common;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class FactorDmaTest {
 

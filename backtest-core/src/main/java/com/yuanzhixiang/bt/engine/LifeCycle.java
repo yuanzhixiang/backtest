@@ -2,20 +2,20 @@ package com.yuanzhixiang.bt.engine;
 
 import java.util.List;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
+import com.yuanzhixiang.bt.engine.domain.Factors;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public interface LifeCycle {
 
-    default void initialize(Context context) {
+    default void initialize(Context contextImpl) {
     }
 
-    default void strategyNext(Context context, List<Factors> nextFactorsList) {
+    default void strategyNext(Context contextImpl, List<Factors> nextFactorsList) {
     }
 
-    default void strategyEnd(Context context) {
+    default void strategyEnd(Context contextImpl) {
     }
 
 }

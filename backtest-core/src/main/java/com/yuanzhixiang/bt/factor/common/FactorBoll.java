@@ -6,12 +6,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.function.Supplier;
 
-import com.yuanzhixiang.bt.engine.Context;
+import com.yuanzhixiang.bt.service.ContextService;
 import com.yuanzhixiang.bt.engine.Local.SuppliedLocal;
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
+import com.yuanzhixiang.bt.engine.domain.Factors;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class FactorBoll implements Factor<FactorBoll> {
 
@@ -48,13 +48,13 @@ public class FactorBoll implements Factor<FactorBoll> {
 
     private static final SuppliedLocal<Factors, Boll> BOLL = new SuppliedLocal<>();
 
-    private static Supplier<Boll> getSupplier(Context context, Factors factors, BigDecimal duration, BigDecimal standardRatio) {
+    private static Supplier<Boll> getSupplier(ContextService contextService, Factors factors, BigDecimal duration, BigDecimal standardRatio) {
         return () -> {
-            BigDecimal ma = getMa(context, factors, duration);
+            BigDecimal ma = getMa(contextService, factors, duration);
             if (ma == null) {
                 return null;
             }
-            BigDecimal md = getMd(context, factors, duration, ma);
+            BigDecimal md = getMd(contextService, factors, duration, ma);
             double mb = ma.setScale(2, RoundingMode.HALF_UP).doubleValue();
             double up = ma.add(standardRatio.multiply(md)).setScale(2, RoundingMode.HALF_UP).doubleValue();
             double dn = ma.subtract(standardRatio.multiply(md)).setScale(2, RoundingMode.HALF_UP).doubleValue();
@@ -63,10 +63,10 @@ public class FactorBoll implements Factor<FactorBoll> {
         };
     }
 
-    private static BigDecimal getMa(Context context, Factors specific, BigDecimal duration) {
+    private static BigDecimal getMa(ContextService contextService, Factors specific, BigDecimal duration) {
         BigDecimal maSum = valueOf(0);
         for (int i = duration.intValue() * -1 + 1; i <= 0; i++) {
-            Factors factors = context.getFactors(specific.getIdentity(), i);
+            Factors factors = contextService.getFactors(specific.getIdentity(), i);
             if (factors == null) {
                 return null;
             }
@@ -75,10 +75,10 @@ public class FactorBoll implements Factor<FactorBoll> {
         return maSum.divide(duration, 2, RoundingMode.HALF_UP);
     }
 
-    private static BigDecimal getMd(Context context, Factors specific, BigDecimal duration, BigDecimal ma) {
+    private static BigDecimal getMd(ContextService contextService, Factors specific, BigDecimal duration, BigDecimal ma) {
         BigDecimal mdSum = valueOf(0);
         for (int i = duration.intValue() * -1 + 1; i <= 0; i++) {
-            Factors factors = context.getFactors(specific.getIdentity(), i);
+            Factors factors = contextService.getFactors(specific.getIdentity(), i);
             BigDecimal difference = valueOf(RealPriceFactor.get(factors.getSymbol(), factors.getClose())).subtract(ma);
             mdSum = difference.multiply(difference).add(mdSum);
         }
@@ -99,7 +99,7 @@ public class FactorBoll implements Factor<FactorBoll> {
     }
 
     @Override
-    public void bind(Context context, Factors factors) {
-        BOLL.setSupplier(factors, getSupplier(context, factors, duration, standardRatio));
+    public void bind(ContextService contextService, Factors factors) {
+        BOLL.setSupplier(factors, getSupplier(contextService, factors, duration, standardRatio));
     }
 }

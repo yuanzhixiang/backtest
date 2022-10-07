@@ -1,13 +1,13 @@
 package com.yuanzhixiang.bt.factor.variant;
 
-import com.yuanzhixiang.bt.engine.Context;
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
+import com.yuanzhixiang.bt.service.ContextService;
+import com.yuanzhixiang.bt.engine.domain.Factors;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public interface VariantFactor {
 
-    Factors bind(Context context, Factors factors);
+    Factors bind(ContextService contextService, Factors factors);
 
 }

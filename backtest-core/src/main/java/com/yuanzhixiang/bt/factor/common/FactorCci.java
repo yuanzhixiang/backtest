@@ -8,7 +8,7 @@
 //import java.math.RoundingMode;
 //import java.util.function.Supplier;
 //
-//import com.yuanzhixiang.bt.domain.model.valobj.Factors;
+//import com.yuanzhixiang.bt.engine.domain.Factors;
 //import com.yuanzhixiang.bt.engine.Configuration;
 //import com.yuanzhixiang.bt.engine.Context;
 //import com.yuanzhixiang.bt.engine.ContextLocal;
@@ -17,7 +17,7 @@
 //import com.yuanzhixiang.bt.kit.LambdaElement;
 //
 ///**
-// * @author yuanzhixiang
+// * @author Yuan Zhixiang
 // */
 //public class FactorCci implements Factor<FactorCci> {
 //

@@ -5,7 +5,7 @@ import static java.math.BigDecimal.valueOf;
 import java.math.BigDecimal;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class BigDecimalConstants {
 

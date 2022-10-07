@@ -6,18 +6,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.yuanzhixiang.bt.engine.*;
+import com.yuanzhixiang.bt.engine.market.CloseableIterator;
+import com.yuanzhixiang.bt.engine.market.Market;
+import com.yuanzhixiang.bt.service.CounterService;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
-import com.yuanzhixiang.bt.domain.model.valobj.Symbol;
-import com.yuanzhixiang.bt.engine.Application;
-import com.yuanzhixiang.bt.engine.Configuration;
-import com.yuanzhixiang.bt.engine.Context;
-import com.yuanzhixiang.bt.strategy.Strategy;
+import com.yuanzhixiang.bt.engine.domain.Factors;
+import com.yuanzhixiang.bt.engine.domain.Symbol;
+import com.yuanzhixiang.bt.engine.Strategy;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class IteratorWrapperTest {
 
@@ -25,13 +26,14 @@ public class IteratorWrapperTest {
     public void testBackMethod() {
         Configuration configuration = new Configuration();
         configuration.setDataSource(new TestBackMethodDS());
+        configuration.setCounter(new CounterService(0, 0, 0, 0, false));
         configuration.setTimeRange(LocalDateTime.of(2001, 1, 1, 0, 0),
             LocalDateTime.of(2001, 2, 1, 0, 0));
         configuration.setSymbolList(List.of(
             new Symbol("000001"),
             new Symbol("000002")
         ));
-        new Application(configuration).run(new Strategy() {
+        new Launcher(configuration).start("", false, new Strategy() {
 
             private int batch = 1;
 
@@ -73,7 +75,7 @@ public class IteratorWrapperTest {
         });
     }
 
-    private static class TestBackMethodDS implements DataSource {
+    private static class TestBackMethodDS implements Market {
 
         private static boolean firstNew = true;
 

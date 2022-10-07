@@ -3,7 +3,7 @@ package com.yuanzhixiang.bt.kit;
 import java.math.BigDecimal;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class MathUtil {
 

@@ -2,15 +2,13 @@ package com.yuanzhixiang.bt.factor.common;
 
 import java.util.function.Supplier;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
-import com.yuanzhixiang.bt.engine.Context;
+import com.yuanzhixiang.bt.engine.domain.Factors;
+import com.yuanzhixiang.bt.service.ContextService;
 import com.yuanzhixiang.bt.engine.Local.SuppliedLocal;
-import com.yuanzhixiang.bt.factor.common.Factor;
-import com.yuanzhixiang.bt.factor.common.RealPriceFactor;
 import com.yuanzhixiang.bt.factor.common.RealPriceFactor.RealPrice;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class FactorDonchianChannel implements Factor {
 
@@ -46,14 +44,14 @@ public class FactorDonchianChannel implements Factor {
         this.n = n;
     }
 
-    private static Supplier<DonchianChannel> getSupplier(Context context, Factors specific, int n) {
+    private static Supplier<DonchianChannel> getSupplier(ContextService contextService, Factors specific, int n) {
         return () -> {
 
             double max = 0;
             double min = 0;
 
             for (int offset = n * -1 + 1; offset <= 0; offset++) {
-                Factors factors = context.getFactors(specific.getIdentity(), offset);
+                Factors factors = contextService.getFactors(specific.getIdentity(), offset);
                 if (factors == null) {
                     break;
                 }
@@ -73,7 +71,7 @@ public class FactorDonchianChannel implements Factor {
 
 
     @Override
-    public void bind(Context context, Factors factors) {
-        DONCHIAN_CHANNEL.setSupplier(factors, getSupplier(context, factors, n));
+    public void bind(ContextService contextService, Factors factors) {
+        DONCHIAN_CHANNEL.setSupplier(factors, getSupplier(contextService, factors, n));
     }
 }

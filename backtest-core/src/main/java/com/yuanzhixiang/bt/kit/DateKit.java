@@ -7,13 +7,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import lombok.Getter;
-
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class DateKit {
-
     public static final LocalDateTime ZERO = LocalDateTime.of(1970, 1, 1, 8, 0);
 
     public static boolean between(LocalDateTime dateTime, LocalDateTime startDate, LocalDateTime endDate) {
@@ -36,7 +33,6 @@ public class DateKit {
         if (start.isAfter(end)) {
             return Collections.emptyList();
         }
-
         List<Month> monthDurationList = new ArrayList<>();
         int startYear = start.getYear();
         int endYear = end.getYear();
@@ -47,25 +43,21 @@ public class DateKit {
             } else {
                 startMonth = 1;
             }
-
             int endMonth;
             if (startYear == end.getYear()) {
                 endMonth = end.getMonthValue();
             } else {
                 endMonth = 12;
             }
-
             while (startMonth <= endMonth) {
                 monthDurationList.add(new Month(startYear, startMonth++));
             }
-
             startYear++;
         }
-
         return monthDurationList;
     }
 
-    @Getter
+
     public static class Month {
         private final int year;
         private final int month;
@@ -74,6 +66,18 @@ public class DateKit {
             this.year = year;
             this.month = month;
         }
+
+        //<editor-fold defaultstate="collapsed" desc="delombok">
+        @SuppressWarnings("all")
+        public int getYear() {
+            return this.year;
+        }
+
+        @SuppressWarnings("all")
+        public int getMonth() {
+            return this.month;
+        }
+        //</editor-fold>
     }
 
     public static LocalDateTime startOfMonth(int year, int month) {

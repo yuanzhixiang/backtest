@@ -11,16 +11,15 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.function.Supplier;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Price;
-import com.yuanzhixiang.bt.engine.Context;
+import com.yuanzhixiang.bt.engine.domain.Price;
+import com.yuanzhixiang.bt.service.ContextService;
 import com.yuanzhixiang.bt.engine.ContextLocal;
 import com.yuanzhixiang.bt.engine.Local;
 import com.yuanzhixiang.bt.engine.Local.SuppliedLocal;
-import com.yuanzhixiang.bt.factor.common.Factor;
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
+import com.yuanzhixiang.bt.engine.domain.Factors;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class FactorKdj implements Factor {
 
@@ -89,14 +88,14 @@ public class FactorKdj implements Factor {
     private static final BigDecimal PREVIOUS_WEIGHTS = _2.divide(_3, 8, RoundingMode.HALF_UP);
     private static final BigDecimal CURRENT_WEIGHTS = _1.divide(_3, 8, RoundingMode.HALF_UP);
 
-    private static Supplier<Kdj> getSupplier(Context context, Factors specific, int range) {
+    private static Supplier<Kdj> getSupplier(ContextService contextService, Factors specific, int range) {
         return () -> {
             Kdj kdj = ORIGINAL_VALUE.get(specific);
             if (kdj != null) {
                 return kdj;
             }
 
-            Factors previousFactors = context.getFactors(specific.getIdentity(), -1);
+            Factors previousFactors = contextService.getFactors(specific.getIdentity(), -1);
 
             // If there is no previous factor, indicating that this is the first factor,
             // then initialize the first node.
@@ -115,7 +114,7 @@ public class FactorKdj implements Factor {
             double maximumPrice = Double.MIN_VALUE;
             double lowestPrice = Double.MAX_VALUE;
             for (int offset = range * -1 + 1; offset <= 0; offset++) {
-                Factors factors = context.getFactors(specific.getIdentity(), offset);
+                Factors factors = contextService.getFactors(specific.getIdentity(), offset);
                 if (factors == null) {
                     break;
                 }
@@ -169,8 +168,8 @@ public class FactorKdj implements Factor {
     private final int range;
 
     @Override
-    public void bind(Context context, Factors factors) {
-        KDJ.setSupplier(factors, getSupplier(context, factors, range));
+    public void bind(ContextService contextService, Factors factors) {
+        KDJ.setSupplier(factors, getSupplier(contextService, factors, range));
         KDJ.get(factors);
     }
 }

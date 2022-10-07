@@ -4,7 +4,7 @@
 //
 //import java.util.function.Supplier;
 //
-//import com.yuanzhixiang.bt.domain.model.valobj.Factors;
+//import com.yuanzhixiang.bt.engine.domain.Factors;
 //import com.yuanzhixiang.bt.engine.Configuration;
 //import com.yuanzhixiang.bt.engine.Context;
 //import com.yuanzhixiang.bt.engine.ContextLocal;
@@ -12,7 +12,7 @@
 //import com.yuanzhixiang.bt.factor.common.FactorMa.Ma;
 //
 ///**
-// * @author yuanzhixiang
+// * @author Yuan Zhixiang
 // */
 //public class FactorDma implements Factor<FactorDma> {
 //

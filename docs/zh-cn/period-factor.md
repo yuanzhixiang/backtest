@@ -14,7 +14,7 @@ public class TestStrategy implements Strategy {
     }
 
     @Override
-    public void next(Context context, Factors factors) {
+    public void next(Context contextService, Factors factors) {
         // 获取周线因子
         Factors weeklyFactors = PeriodFactorWeekly.get(factors);
     }
@@ -44,7 +44,7 @@ public class TestStrategy implements Strategy {
     }
 
     @Override
-    public void next(Context context, Factors factors) {
+    public void next(Context contextService, Factors factors) {
         // 判断是否出现跨日
         if (PeriodFactorDaily.change(factors)) {
             // do something...

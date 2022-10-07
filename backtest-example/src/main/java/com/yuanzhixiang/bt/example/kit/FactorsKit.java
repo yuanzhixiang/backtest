@@ -6,14 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
-import com.yuanzhixiang.bt.domain.model.valobj.Symbol;
+import com.yuanzhixiang.bt.engine.domain.Factors;
+import com.yuanzhixiang.bt.engine.domain.Symbol;
 import com.yuanzhixiang.bt.engine.Local;
 
 import cn.hutool.core.convert.Convert;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class FactorsKit {
 

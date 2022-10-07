@@ -1,17 +1,19 @@
 package com.yuanzhixiang.bt.engine;
 
+import com.yuanzhixiang.bt.service.ContextService;
+
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class ContextLocal {
 
-    private static final ThreadLocal<Context> CONTEXT = new ThreadLocal<>();
+    private static final ThreadLocal<ContextService> CONTEXT = new ThreadLocal<>();
 
-    public static void set(Context context) {
-        CONTEXT.set(context);
+    public static void set(ContextService contextService) {
+        CONTEXT.set(contextService);
     }
 
-    public static Context get() {
+    public static ContextService get() {
         return CONTEXT.get();
     }
 

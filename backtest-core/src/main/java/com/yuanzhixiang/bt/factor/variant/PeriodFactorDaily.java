@@ -2,13 +2,13 @@ package com.yuanzhixiang.bt.factor.variant;
 
 import java.util.List;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
-import com.yuanzhixiang.bt.domain.model.valobj.Symbol;
+import com.yuanzhixiang.bt.engine.domain.Factors;
+import com.yuanzhixiang.bt.engine.domain.Symbol;
 import com.yuanzhixiang.bt.engine.ContextLocal;
 import com.yuanzhixiang.bt.engine.Local;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class PeriodFactorDaily extends AbstractPeriodFactor {
 

@@ -1,64 +1,59 @@
 package com.yuanzhixiang.bt.engine;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Symbol;
-import com.yuanzhixiang.bt.domain.repository.DataSource;
+import com.yuanzhixiang.bt.engine.domain.Symbol;
+import com.yuanzhixiang.bt.engine.market.Market;
 import com.yuanzhixiang.bt.factor.common.Factor;
 import com.yuanzhixiang.bt.factor.variant.VariantFactor;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class Configuration {
 
-    @Getter
-    @Setter
     private List<Symbol> symbolList;
 
-    @Getter
-    @Setter
     private Symbol benchmark;
 
-    @Getter
-    @Setter
-    private double commissionRate;
+    private Counter counter;
 
-    @Getter
-    @Setter
-    private int minCommission = 5;
+    private Market market;
 
-    @Getter
-    @Setter
-    private double accountBalance;
-
-    private DataSource dataSource;
-
-    public DataSource getDataSource() {
-        return dataSource;
+    public List<Symbol> getSymbolList() {
+        return symbolList;
     }
 
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public void setSymbolList(List<Symbol> symbolList) {
+        this.symbolList = symbolList;
     }
 
-    private boolean todayAddOneTrade = true;
-
-    public boolean isTodayAddOneTrade() {
-        return todayAddOneTrade;
+    public Symbol getBenchmark() {
+        return benchmark;
     }
 
-    public void setTodayAddOneTrade(boolean todayAddOneTrade) {
-        this.todayAddOneTrade = todayAddOneTrade;
+    public void setBenchmark(Symbol benchmark) {
+        this.benchmark = benchmark;
+    }
+
+    public Counter getCounter() {
+        return counter;
+    }
+
+    public void setCounter(Counter counter) {
+        this.counter = counter;
+    }
+
+    public Market getDataSource() {
+        return market;
+    }
+
+    public void setDataSource(Market market) {
+        this.market = market;
     }
 
     private Map<String, Factor<?>> factorMaps = new HashMap<>();
@@ -117,23 +112,5 @@ public class Configuration {
     public void setTimeRange(LocalDateTime startDate, LocalDateTime endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
-    }
-
-    public Configuration deepClone() {
-        Configuration configuration = new Configuration();
-        configuration.symbolList = new ArrayList<>(symbolList);
-        configuration.benchmark = benchmark;
-        configuration.dataSource = dataSource;
-        configuration.commissionRate = commissionRate;
-        configuration.minCommission = minCommission;
-        configuration.accountBalance = accountBalance;
-
-        configuration.factorMaps = factorMaps;
-        configuration.variantFactorMap = variantFactorMap;
-        configuration.lifeCycleMap = lifeCycleMap;
-
-        configuration.startDate = startDate;
-        configuration.endDate = endDate;
-        return configuration;
     }
 }

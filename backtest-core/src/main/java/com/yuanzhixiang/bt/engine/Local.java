@@ -6,10 +6,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 import com.yuanzhixiang.bt.engine.Local.LocalMap.Entry;
-import com.yuanzhixiang.bt.exception.BackTestException;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class Local<L extends LocalVariable, V> {
 

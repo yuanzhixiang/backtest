@@ -3,16 +3,16 @@ package com.yuanzhixiang.bt.factor.variant;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
-import com.yuanzhixiang.bt.domain.model.valobj.Symbol;
-import com.yuanzhixiang.bt.engine.Context;
+import com.yuanzhixiang.bt.engine.domain.Factors;
+import com.yuanzhixiang.bt.engine.domain.Symbol;
+import com.yuanzhixiang.bt.service.ContextService;
 import com.yuanzhixiang.bt.engine.ContextLocal;
 import com.yuanzhixiang.bt.engine.Local;
-import com.yuanzhixiang.bt.exception.BackTestException;
+import com.yuanzhixiang.bt.engine.BackTestException;
 import com.yuanzhixiang.bt.factor.common.RealPriceFactor;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class VariantFactorTangle implements VariantFactor {
 
@@ -29,7 +29,7 @@ public class VariantFactorTangle implements VariantFactor {
     private static final Local<Symbol, List<Factors>> DATASOURCE = new Local<>();
 
     @Override
-    public Factors bind(Context context, Factors factors) {
+    public Factors bind(ContextService contextService, Factors factors) {
         List<Factors> factorsList = DATASOURCE.get(factors.getSymbol());
 
         if (factorsList == null) {

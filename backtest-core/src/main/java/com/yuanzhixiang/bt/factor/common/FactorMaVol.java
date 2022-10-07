@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
-import com.yuanzhixiang.bt.engine.Context;
+import com.yuanzhixiang.bt.engine.domain.Factors;
+import com.yuanzhixiang.bt.service.ContextService;
 import com.yuanzhixiang.bt.engine.ContextLocal;
 import com.yuanzhixiang.bt.engine.Local;
 import com.yuanzhixiang.bt.engine.Local.SuppliedLocal;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class FactorMaVol implements Factor<FactorMaVol> {
 
@@ -36,7 +36,7 @@ public class FactorMaVol implements Factor<FactorMaVol> {
 
     private static final Local<Factors, MaVol> ORIGIN_VALUE = new Local<>();
 
-    static Supplier<MaVol> getSupplier(Context context, Factors specific, List<Integer> durationList) {
+    static Supplier<MaVol> getSupplier(ContextService contextService, Factors specific, List<Integer> durationList) {
         return () -> {
             // The mavol is ca
             MaVol originValue = ORIGIN_VALUE.get(specific);
@@ -50,7 +50,7 @@ public class FactorMaVol implements Factor<FactorMaVol> {
                 // Calculate moving average value
                 long sum = 0;
                 for (int offset = duration * -1 + 1; offset <= 0; offset++) {
-                    Factors factor = context.getFactors(specific.getIdentity(), offset);
+                    Factors factor = contextService.getFactors(specific.getIdentity(), offset);
                     if (factor == null) {
                          break;
                     }
@@ -72,7 +72,7 @@ public class FactorMaVol implements Factor<FactorMaVol> {
     private final List<Integer> durationList;
 
     @Override
-    public void bind(Context context, Factors factors) {
-        MA_VOL.setSupplier(factors, getSupplier(context, factors, durationList));
+    public void bind(ContextService contextService, Factors factors) {
+        MA_VOL.setSupplier(factors, getSupplier(contextService, factors, durationList));
     }
 }

@@ -13,7 +13,7 @@ import com.yuanzhixiang.bt.kit.DateKit.Month;
 import junit.framework.TestCase;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  * @date 2022/01/11 15:00:25
  */
 public class DateKitTest extends TestCase {

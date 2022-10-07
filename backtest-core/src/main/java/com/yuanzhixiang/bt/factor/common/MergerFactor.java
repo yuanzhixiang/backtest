@@ -1,13 +1,13 @@
 package com.yuanzhixiang.bt.factor.common;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
-import com.yuanzhixiang.bt.domain.model.valobj.Price;
-import com.yuanzhixiang.bt.domain.model.valobj.Symbol;
+import com.yuanzhixiang.bt.engine.domain.Factors;
+import com.yuanzhixiang.bt.engine.domain.Price;
+import com.yuanzhixiang.bt.engine.domain.Symbol;
 import com.yuanzhixiang.bt.engine.ContextLocal;
 import com.yuanzhixiang.bt.kit.LambdaElement;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 class MergerFactor {
 

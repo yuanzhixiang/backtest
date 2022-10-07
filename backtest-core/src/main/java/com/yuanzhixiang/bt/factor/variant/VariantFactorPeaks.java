@@ -1,7 +1,7 @@
 package com.yuanzhixiang.bt.factor.variant;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class VariantFactorPeaks {
 

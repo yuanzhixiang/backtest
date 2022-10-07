@@ -8,12 +8,12 @@
 //import org.junit.Test;
 //
 //import com.yuanzhixiang.bt.domain.datasource.DataSourceStockDaily;
-//import com.yuanzhixiang.bt.domain.model.valobj.Symbol;
+//import com.yuanzhixiang.bt.engine.domain.Symbol;
 //import com.yuanzhixiang.bt.engine.Application;
 //import com.yuanzhixiang.bt.engine.Configuration;
 //
 ///**
-// * @author yuanzhixiang
+// * @author Yuan Zhixiang
 // */
 //public class FactorCciTest {
 //

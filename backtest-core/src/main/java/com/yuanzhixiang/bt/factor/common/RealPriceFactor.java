@@ -6,14 +6,13 @@ import static java.math.BigDecimal.valueOf;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
-import com.yuanzhixiang.bt.domain.model.valobj.Symbol;
-import com.yuanzhixiang.bt.domain.model.valobj.Price;
+import com.yuanzhixiang.bt.engine.domain.Factors;
+import com.yuanzhixiang.bt.engine.domain.Symbol;
+import com.yuanzhixiang.bt.engine.domain.Price;
 import com.yuanzhixiang.bt.engine.ContextLocal;
-import com.yuanzhixiang.bt.factor.common.LatestAdjustmentFactor;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class RealPriceFactor {
 

@@ -6,15 +6,13 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.function.Supplier;
 
-import com.yuanzhixiang.bt.engine.Context;
+import com.yuanzhixiang.bt.service.ContextService;
 import com.yuanzhixiang.bt.engine.ContextLocal;
 import com.yuanzhixiang.bt.engine.Local.SuppliedLocal;
-import com.yuanzhixiang.bt.factor.common.Factor;
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
-import com.yuanzhixiang.bt.factor.common.RealPriceFactor;
+import com.yuanzhixiang.bt.engine.domain.Factors;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class FactorAtr implements Factor<FactorAtr> {
 
@@ -24,13 +22,13 @@ public class FactorAtr implements Factor<FactorAtr> {
 
     private static final SuppliedLocal<Factors, Double> ATR = new SuppliedLocal<>();
 
-    private static Supplier<Double> getSupplier(Context context, Factors specific, BigDecimal range) {
+    private static Supplier<Double> getSupplier(ContextService contextService, Factors specific, BigDecimal range) {
         return () -> {
             BigDecimal sum = valueOf(0);
 
             for (int offset = range.intValue() * -1 + 1; offset <= 0; offset++) {
-                Factors factors = context.getFactors(specific.getIdentity(), offset);
-                Factors previousFactors = context.getFactors(specific.getIdentity(), offset - 1);
+                Factors factors = contextService.getFactors(specific.getIdentity(), offset);
+                Factors previousFactors = contextService.getFactors(specific.getIdentity(), offset - 1);
 
                 if (factors == null || previousFactors == null) {
                     return sum.divide(range.add(valueOf(offset)), 4, RoundingMode.HALF_UP).doubleValue();
@@ -59,7 +57,7 @@ public class FactorAtr implements Factor<FactorAtr> {
     }
 
     @Override
-    public void bind(Context context, Factors factors) {
-        ATR.setSupplier(factors, getSupplier(context, factors, range));
+    public void bind(ContextService contextService, Factors factors) {
+        ATR.setSupplier(factors, getSupplier(contextService, factors, range));
     }
 }

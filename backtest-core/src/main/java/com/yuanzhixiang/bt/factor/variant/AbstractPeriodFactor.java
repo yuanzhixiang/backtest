@@ -3,27 +3,27 @@ package com.yuanzhixiang.bt.factor.variant;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
-import com.yuanzhixiang.bt.domain.model.valobj.Price;
-import com.yuanzhixiang.bt.domain.model.valobj.Symbol;
-import com.yuanzhixiang.bt.engine.Context;
+import com.yuanzhixiang.bt.engine.domain.Factors;
+import com.yuanzhixiang.bt.engine.domain.Price;
+import com.yuanzhixiang.bt.engine.domain.Symbol;
+import com.yuanzhixiang.bt.service.ContextService;
 import com.yuanzhixiang.bt.engine.Local;
 import com.yuanzhixiang.bt.factor.common.RealPriceFactor;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public abstract class AbstractPeriodFactor implements VariantFactor {
 
     @Override
-    public final Factors bind(Context context, Factors factors) {
+    public final Factors bind(ContextService contextService, Factors factors) {
         Price open = factors.getOpen();
         Price close = factors.getClose();
         Price high = factors.getHigh();
         Price low = factors.getLow();
         long volume = factors.getVolume();
 
-        Factors specific = context.getFactors(factors.getIdentity(), -1);
+        Factors specific = contextService.getFactors(factors.getIdentity(), -1);
         if (specific != null && toMerge(factors, specific)) {
             Factors periodFactors = getPeriodLocal().get(specific);
             open = periodFactors.getOpen();

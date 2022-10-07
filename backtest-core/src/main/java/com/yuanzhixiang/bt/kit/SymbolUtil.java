@@ -1,7 +1,7 @@
 package com.yuanzhixiang.bt.kit;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class SymbolUtil {
 

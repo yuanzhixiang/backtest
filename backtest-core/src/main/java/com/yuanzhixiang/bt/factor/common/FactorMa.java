@@ -12,14 +12,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
+import com.yuanzhixiang.bt.engine.domain.Factors;
 import com.yuanzhixiang.bt.engine.Configuration;
-import com.yuanzhixiang.bt.engine.Context;
+import com.yuanzhixiang.bt.service.ContextService;
 import com.yuanzhixiang.bt.engine.ContextLocal;
 import com.yuanzhixiang.bt.engine.Local.SuppliedLocal;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class FactorMa implements Factor<FactorMa> {
 
@@ -95,7 +95,7 @@ public class FactorMa implements Factor<FactorMa> {
 
     private static final SuppliedLocal<Factors, Ma> MA = new SuppliedLocal<>();
 
-    static Supplier<Ma> getSupplier(Context context, Factors specific, Set<Integer> durationList) {
+    static Supplier<Ma> getSupplier(ContextService contextService, Factors specific, Set<Integer> durationList) {
         return () -> {
             Ma ma = new Ma();
             ma.valueMap = new HashMap<>(16);
@@ -103,7 +103,7 @@ public class FactorMa implements Factor<FactorMa> {
                 // Calculate moving average value
                 BigDecimal sum = _0;
                 for (int offset = duration * -1 + 1; offset <= 0; offset++) {
-                    Factors factor = context.getFactors(specific.getIdentity(), offset);
+                    Factors factor = contextService.getFactors(specific.getIdentity(), offset);
                     if (factor == null) {
                          break;
                     }
@@ -138,7 +138,7 @@ public class FactorMa implements Factor<FactorMa> {
     }
 
     @Override
-    public void bind(Context context, Factors factors) {
-        MA.setSupplier(factors, getSupplier(context, factors, cycleSet));
+    public void bind(ContextService contextService, Factors factors) {
+        MA.setSupplier(factors, getSupplier(contextService, factors, cycleSet));
     }
 }

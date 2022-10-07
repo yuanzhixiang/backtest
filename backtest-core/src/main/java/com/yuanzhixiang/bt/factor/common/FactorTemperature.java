@@ -2,17 +2,15 @@ package com.yuanzhixiang.bt.factor.common;
 
 import java.util.function.Supplier;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
-import com.yuanzhixiang.bt.engine.Context;
+import com.yuanzhixiang.bt.engine.domain.Factors;
+import com.yuanzhixiang.bt.service.ContextService;
 import com.yuanzhixiang.bt.engine.Local;
 import com.yuanzhixiang.bt.engine.Local.SuppliedLocal;
-import com.yuanzhixiang.bt.factor.common.Factor;
-import com.yuanzhixiang.bt.factor.common.RealPriceFactor;
 import com.yuanzhixiang.bt.factor.common.RealPriceFactor.RealPrice;
 import com.yuanzhixiang.bt.factor.variant.VariantFactorTangle;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class FactorTemperature implements Factor {
 
@@ -66,7 +64,7 @@ public class FactorTemperature implements Factor {
 
     private static final Local<Factors, Temperature> VALUE = new Local<>();
 
-    static Supplier<Temperature> getSupplier(Context context, Factors specific, int duration) {
+    static Supplier<Temperature> getSupplier(ContextService contextService, Factors specific, int duration) {
         return () -> {
             Temperature value = VALUE.get(specific);
             if (value != null) {
@@ -115,7 +113,7 @@ public class FactorTemperature implements Factor {
     private final int duration;
 
     @Override
-    public void bind(Context context, Factors factors) {
-        TEMPERATURE.setSupplier(factors, getSupplier(context, factors, duration));
+    public void bind(ContextService contextService, Factors factors) {
+        TEMPERATURE.setSupplier(factors, getSupplier(contextService, factors, duration));
     }
 }

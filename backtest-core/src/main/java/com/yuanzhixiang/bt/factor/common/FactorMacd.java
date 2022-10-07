@@ -13,17 +13,15 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.function.Supplier;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
-import com.yuanzhixiang.bt.domain.model.valobj.Price;
-import com.yuanzhixiang.bt.engine.Context;
+import com.yuanzhixiang.bt.engine.domain.Factors;
+import com.yuanzhixiang.bt.engine.domain.Price;
+import com.yuanzhixiang.bt.service.ContextService;
 import com.yuanzhixiang.bt.engine.ContextLocal;
 import com.yuanzhixiang.bt.engine.Local;
 import com.yuanzhixiang.bt.engine.Local.SuppliedLocal;
-import com.yuanzhixiang.bt.factor.common.Factor;
-import com.yuanzhixiang.bt.factor.common.LatestAdjustmentFactor;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class FactorMacd implements Factor<FactorMacd> {
 
@@ -115,7 +113,7 @@ public class FactorMacd implements Factor<FactorMacd> {
     private static final BigDecimal DEA_WEIGHTS = _2.divide(_10, WEIGHTS_SCALE, RoundingMode.HALF_UP);
 
     // todo Extract controllable calculation parameters
-    static Supplier<Macd> getSupplier(Context context, Factors specific) {
+    static Supplier<Macd> getSupplier(ContextService contextService, Factors specific) {
         return () -> {
             Macd macd = ORIGINAL_MACD.get(specific);
             if (macd != null) {
@@ -126,7 +124,7 @@ public class FactorMacd implements Factor<FactorMacd> {
                 return macd;
             }
 
-            Factors previousFactors = context.getFactors(specific.getIdentity(), -1);
+            Factors previousFactors = contextService.getFactors(specific.getIdentity(), -1);
             Price priceClose = specific.getClose();
 
             // If there is no previous factor, indicating that this is the first factor,
@@ -171,8 +169,8 @@ public class FactorMacd implements Factor<FactorMacd> {
     }
 
     @Override
-    public void bind(Context context, Factors factors) {
-        MACD.setSupplier(factors, getSupplier(context, factors));
+    public void bind(ContextService contextService, Factors factors) {
+        MACD.setSupplier(factors, getSupplier(contextService, factors));
         MACD.get(factors);
     }
 }

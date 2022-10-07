@@ -3,10 +3,10 @@ package com.yuanzhixiang.bt.engine;
 import java.util.Collection;
 import java.util.List;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
+import com.yuanzhixiang.bt.engine.domain.Factors;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class RunListeners implements LifeCycle {
 
@@ -17,23 +17,23 @@ public class RunListeners implements LifeCycle {
     private final Collection<LifeCycle> lifeCycles;
 
     @Override
-    public void initialize(Context context) {
+    public void initialize(Context contextImpl) {
         for (LifeCycle lifeCycle : lifeCycles) {
-            lifeCycle.initialize(context);
+            lifeCycle.initialize(contextImpl);
         }
     }
 
     @Override
-    public void strategyNext(Context context, List<Factors> nextFactorsList) {
+    public void strategyNext(Context contextImpl, List<Factors> nextFactorsList) {
         for (LifeCycle lifeCycle : lifeCycles) {
-            lifeCycle.strategyNext(context, nextFactorsList);
+            lifeCycle.strategyNext(contextImpl, nextFactorsList);
         }
     }
 
     @Override
-    public void strategyEnd(Context context) {
+    public void strategyEnd(Context contextImpl) {
         for (LifeCycle lifeCycle : lifeCycles) {
-            lifeCycle.strategyEnd(context);
+            lifeCycle.strategyEnd(contextImpl);
         }
     }
 }

@@ -1,11 +1,11 @@
 package com.yuanzhixiang.bt.factor.common;
 
 import com.yuanzhixiang.bt.engine.Configuration;
-import com.yuanzhixiang.bt.engine.Context;
-import com.yuanzhixiang.bt.domain.model.valobj.Factors;
+import com.yuanzhixiang.bt.service.ContextService;
+import com.yuanzhixiang.bt.engine.domain.Factors;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public interface Factor<F extends Factor<F>> {
 
@@ -22,9 +22,9 @@ public interface Factor<F extends Factor<F>> {
     /**
      * Bind factor to factor sets.
      *
-     * @param context context
+     * @param contextService context
      * @param factors factor sets
      */
-    void bind(Context context, Factors factors);
+    void bind(ContextService contextService, Factors factors);
 
 }

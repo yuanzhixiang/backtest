@@ -7,7 +7,7 @@
 ```java
 public class FactorVolumeSort implements Factor {
     @Override
-    public void bind(Context context, Factors factors) {
+    public void bind(Context contextService, Factors factors) {
 
     }
 }
@@ -21,7 +21,7 @@ public class FactorVolumeSort implements Factor {
     private static final Local<Factors, Double> VALUE = new Local<>();
 
     @Override
-    public void bind(Context context, Factors factors) {
+    public void bind(Context contextService, Factors factors) {
         VALUE.set(factors, factors.getClose().getPrice());
     }
 }
@@ -51,7 +51,7 @@ public class DefaultStrategy implements Strategy {
     }
 
     @Override
-    public void next(Context context, Factors factors) {
+    public void next(Context contextService, Factors factors) {
         // 获取因子的值
         System.out.println("Close price: " + FactorVolumeSort.get(factors, 0));
     }
@@ -87,16 +87,16 @@ public class FactorVolumeSort implements Factor {
     private static final SuppliedLocal<Factors, Double> VALUE = new SuppliedLocal<>();
 
     // 实现 Supplier 方法
-    private static Supplier<Double> getSupplier(Context context, Factors factors) {
+    private static Supplier<Double> getSupplier(Context contextService, Factors factors) {
         return () -> {
             return FactorRealPrice.get(factors).getClose();
         };
     }
 
     @Override
-    public void bind(Context context, Factors factors) {
+    public void bind(Context contextService, Factors factors) {
         // 调用 setSupplier 注入 Supplier 方法
-        VALUE.setSupplier(factors, getSupplier(context, factors));
+        VALUE.setSupplier(factors, getSupplier(contextService, factors));
     }
 }
 ```

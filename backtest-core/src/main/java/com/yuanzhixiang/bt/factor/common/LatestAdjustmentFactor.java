@@ -2,11 +2,11 @@ package com.yuanzhixiang.bt.factor.common;
 
 import java.math.BigDecimal;
 
-import com.yuanzhixiang.bt.domain.model.valobj.Symbol;
+import com.yuanzhixiang.bt.engine.domain.Symbol;
 import com.yuanzhixiang.bt.engine.ContextLocal;
 
 /**
- * @author yuanzhixiang
+ * @author Yuan Zhixiang
  */
 public class LatestAdjustmentFactor {
 
