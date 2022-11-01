@@ -87,11 +87,11 @@ public class FactorsKit {
 
     public static Factors mapToFactors(Symbol symbol, Map<String, Object> valueMap) {
         LocalDateTime tradingDate = Convert.convert(LocalDateTime.class, valueMap.get("tradingDate"));
-        Double open = Convert.convert(Double.class, valueMap.get("open"));
-        Double close = Convert.convert(Double.class, valueMap.get("close"));
-        Double high = Convert.convert(Double.class, valueMap.get("high"));
-        Double low = Convert.convert(Double.class, valueMap.get("low"));
-        Long volume = (long) (Convert.convert(Double.class, valueMap.get("volume")) * 100);
+        BigDecimal open = Convert.convert(BigDecimal.class, valueMap.get("open"));
+        BigDecimal close = Convert.convert(BigDecimal.class, valueMap.get("close"));
+        BigDecimal high = Convert.convert(BigDecimal.class, valueMap.get("high"));
+        BigDecimal low = Convert.convert(BigDecimal.class, valueMap.get("low"));
+        BigDecimal volume = Convert.convert(BigDecimal.class, valueMap.get("volume")).multiply(BigDecimal.valueOf(100));
         BigDecimal adjustment = Convert.convert(BigDecimal.class, valueMap.get("priceAdjustmentFactor"));
         Factors factors = new Factors(symbol, tradingDate, open, close, high, low, volume, adjustment);
 

@@ -2,6 +2,7 @@ package com.yuanzhixiang.bt.factor.common;
 
 import static java.math.BigDecimal.valueOf;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
@@ -48,15 +49,15 @@ public class FactorMaVol implements Factor<FactorMaVol> {
             maVol.valueMap = new HashMap<>(16);
             for (Integer duration : durationList) {
                 // Calculate moving average value
-                long sum = 0;
+                BigDecimal sum = BigDecimal.ZERO;
                 for (int offset = duration * -1 + 1; offset <= 0; offset++) {
                     Factors factor = contextService.getFactors(specific.getIdentity(), offset);
                     if (factor == null) {
                          break;
                     }
-                    sum += factor.getVolume();
+                    sum = sum.add(factor.getVolume());
                 }
-                maVol.valueMap.put(duration, valueOf(sum).divide(valueOf(duration), 2, RoundingMode.HALF_UP).doubleValue());
+                maVol.valueMap.put(duration, sum.divide(valueOf(duration), 2, RoundingMode.HALF_UP).doubleValue());
             }
 
             ORIGIN_VALUE.set(specific, maVol);

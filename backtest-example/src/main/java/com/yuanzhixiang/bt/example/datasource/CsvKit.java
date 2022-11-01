@@ -86,14 +86,14 @@ public class CsvKit {
             iterator = mapper.readerFor(Map.class).with(schema).readValues(new File(path));
             while (iterator.hasNext()) {
                 Map<String, String> next = iterator.next();
-                Double close = Double.valueOf(next.get("close"));
-                Double open = Double.valueOf(next.get("open"));
-                Double high = Double.valueOf(next.get("high"));
-                Double low = Double.valueOf(next.get("low"));
-                double adjustment = Double.parseDouble(next.get("adjustment"));
-                Long volume = Long.valueOf(next.get("volume"));
+                BigDecimal close = BigDecimal.valueOf(Double.parseDouble(next.get("close")));
+                BigDecimal open = BigDecimal.valueOf(Double.parseDouble(next.get("open")));
+                BigDecimal high = BigDecimal.valueOf(Double.parseDouble(next.get("high")));
+                BigDecimal low = BigDecimal.valueOf(Double.parseDouble(next.get("low")));
+                BigDecimal adjustment = BigDecimal.valueOf(Double.parseDouble(next.get("adjustment")));
+                BigDecimal volume = BigDecimal.valueOf(Long.parseLong(next.get("volume")));
                 LocalDateTime date = LocalDateTimeUtil.parse(next.get("date"), "yyyyMMddmmHHss");
-                response.add(new Factors(symbol, date, open, close, high, low, volume, BigDecimal.valueOf(adjustment)));
+                response.add(new Factors(symbol, date, open, close, high, low, volume, adjustment));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

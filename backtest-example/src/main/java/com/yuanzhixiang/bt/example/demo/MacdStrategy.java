@@ -11,14 +11,13 @@ import com.yuanzhixiang.bt.factor.common.FactorMacd.Macd;
 import com.yuanzhixiang.bt.factor.variant.PeriodFactorDaily;
 import com.yuanzhixiang.bt.engine.Strategy;
 
+import java.math.BigDecimal;
+
 /**
  * @author Yuan Zhixiang
  */
 public class MacdStrategy implements Strategy {
-    //<editor-fold defaultstate="collapsed" desc="delombok">
-    @SuppressWarnings("all")
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MacdStrategy.class);
-    //</editor-fold>
 
     public MacdStrategy(Configuration configuration) {
         // 注册日线级别数据源
@@ -48,8 +47,8 @@ public class MacdStrategy implements Strategy {
         }
         // 判断金叉则买入
         if (pDailyMacd.getDiff() > pDailyMacd.getDea() && ppDailyMacd.getDiff() < ppDailyMacd.getDea()) {
-            double quantity = AccountKit.buy(context.getCounter().queryBalance(), dailyFactors.getOpen().getPrice(), 1);
-            if (quantity != 0) {
+            BigDecimal quantity = AccountKit.buy(context.getCounter().queryBalance(), dailyFactors.getOpen().getPrice(), BigDecimal.ONE);
+            if (quantity.compareTo(BigDecimal.ZERO) > 0) {
                 context.getCounter().buy(factors.getSymbol(), factors.getTradeDate(), dailyFactors.getOpen().getPrice(), quantity);
             }
         }
@@ -57,7 +56,7 @@ public class MacdStrategy implements Strategy {
         if (pDailyMacd.getDiff() < pDailyMacd.getDea() && ppDailyMacd.getDiff() > ppDailyMacd.getDea()) {
             Position position = context.getCounter().queryPosition(factors.getSymbol());
             // 这里为了方便所以仓位设置为 1，表示全仓卖出
-            if (position.getQuantity() != 0) {
+            if (position.getQuantity().compareTo(BigDecimal.ZERO) > 0) {
                 context.getCounter().sell(factors.getSymbol(), factors.getTradeDate(), dailyFactors.getOpen().getPrice(), position.getQuantity());
             }
         }

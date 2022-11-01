@@ -43,16 +43,16 @@ public class Statistic {
         for (Symbol symbol : symbols) {
             Position position = counter.queryPosition(symbol);
             Factors factors = context.getFactors(symbol, 0);
-            sum = sum.add(valueOf(position.getTotalQuantity()).multiply(valueOf(factors.getClose().getPrice())));
+            sum = sum.add(position.getTotalQuantity().multiply(factors.getClose().getPrice()));
         }
-        double asset = sum.add(valueOf(counter.queryBalance())).doubleValue();
+        double asset = sum.add(counter.queryBalance()).doubleValue();
 
         // Calculate bench mark price
         double benchMarkPrice = 0;
         if (benchMark != null) {
             Factors factors = context.getFactors(benchMark, 0);
             if (factors != null) {
-                benchMarkPrice = factors.getClose().getPrice();
+                benchMarkPrice = factors.getClose().getPrice().doubleValue();
             }
         }
 

@@ -11,6 +11,8 @@ import com.yuanzhixiang.bt.engine.domain.TradeRecord
 import com.yuanzhixiang.bt.kit.SymbolUtil
 import java.lang.UnsupportedOperationException
 import java.math.BigDecimal
+import java.math.BigDecimal.ZERO
+import java.math.BigDecimal.valueOf
 import java.math.RoundingMode
 import java.time.LocalDateTime
 
@@ -39,7 +41,7 @@ class CounterService(
      */
     private val commissionRate: BigDecimal
     private val todayAddOneTrade: Boolean
-    private var balance: Double
+    private var balance: BigDecimal
 
     private val positionMap: MutableMap<Symbol, Position> = HashMap()
 
@@ -51,10 +53,10 @@ class CounterService(
         if (stampDutyRate < 0 || transferFeeRate < 0 || commissionRate < 0) {
             throw BackTestException("StampDutyRate, TransferFeeRate, CommissionRate must be great than 0.")
         }
-        this.stampDutyRate = BigDecimal.valueOf(stampDutyRate)
-        this.transferFeeRate = BigDecimal.valueOf(transferFeeRate)
-        this.commissionRate = BigDecimal.valueOf(commissionRate)
-        this.balance = balance
+        this.stampDutyRate = valueOf(stampDutyRate)
+        this.transferFeeRate = valueOf(transferFeeRate)
+        this.commissionRate = valueOf(commissionRate)
+        this.balance = valueOf(balance)
         this.todayAddOneTrade = todayAddOneTrade
     }
 
@@ -76,7 +78,7 @@ class CounterService(
     override fun queryPosition(symbol: Symbol): Position {
         var position = positionMap[symbol]
         if (position == null) {
-            position = Position(symbol, 0, 0, 0.0, 0.0, null)
+            position = Position(symbol, ZERO, ZERO, ZERO, ZERO, null)
             positionMap[symbol] = position
         }
         return position
@@ -84,7 +86,7 @@ class CounterService(
 
     override fun refresh() {
         for (position in positionMap.values) {
-            if (position.totalQuantity == 0) {
+            if (position.totalQuantity == ZERO) {
                 // Empty localMap if there is no quantity
                 if (position.localMap != null) {
                     position.localMap = null
@@ -92,69 +94,68 @@ class CounterService(
                 continue
             }
             val realAdjustment = PositionRealAdjustment.get(position)
-            var newHoldQuantity = BigDecimal.valueOf(position.quantity.toLong()).multiply(realAdjustment)
-            var newFrozenQuantity = BigDecimal.valueOf(position.frozenQuantity.toLong()).multiply(realAdjustment)
+            var newHoldQuantity = valueOf(position.quantity.toLong()).multiply(realAdjustment)
+            var newFrozenQuantity = valueOf(position.frozenQuantity.toLong()).multiply(realAdjustment)
             newHoldQuantity = newHoldQuantity.add(newFrozenQuantity)
-            newFrozenQuantity = BigDecimal.ZERO
-            val newBuyInFee = BigDecimal.valueOf(position.buyInFee).multiply(realAdjustment)
-            val newCostPrice = BigDecimal.valueOf(position.costPrice).multiply(realAdjustment)
+            newFrozenQuantity = ZERO
+            val newBuyInFee = position.buyInFee.multiply(realAdjustment)
+            val newCostPrice = position.costPrice.multiply(realAdjustment)
             putPosition(
                 Position(
                     position.symbol,
-                    newHoldQuantity.toInt(),
-                    newFrozenQuantity.toInt(),
-                    newBuyInFee.toDouble(),
-                    newCostPrice.toDouble(),
+                    newHoldQuantity,
+                    newFrozenQuantity,
+                    newBuyInFee,
+                    newCostPrice,
                     position.localMap
                 )
             )
         }
     }
 
-    override fun queryBalance(): Double {
+    override fun queryBalance(): BigDecimal {
         return balance
     }
 
-    override fun sell(symbol: Symbol, tradeTime: LocalDateTime, price: Double, quantity: Double) {
+    override fun sell(symbol: Symbol, tradeTime: LocalDateTime, price: BigDecimal, quantity: BigDecimal) {
         val position = queryPosition(symbol)
-        val sellQuantity = BigDecimal.valueOf(quantity)
         // calculate exchange cost
-        var sellAmount = BigDecimal.valueOf(price).multiply(sellQuantity)
-        val transferFee = getTransferFee(symbol, sellQuantity)
+        var sellAmount = price * quantity
+        val transferFee = getTransferFee(symbol, quantity)
         val commissionFee = getCommissionRate(sellAmount)
         val stampDuty = getStampDuty(sellAmount)
 
         // Expense deductions
         sellAmount = sellAmount.subtract(transferFee).subtract(commissionFee).subtract(stampDuty)
-        val oldHoldQuantity = BigDecimal.valueOf(position.quantity.toLong())
-        val oldFrozenQuantity = BigDecimal.valueOf(position.frozenQuantity.toLong())
+        val oldHoldQuantity = position.quantity
+        val oldFrozenQuantity = position.frozenQuantity
         val oldTotalQuantity = oldHoldQuantity.add(oldFrozenQuantity)
-        val oldBuyInFee = BigDecimal.valueOf(position.buyInFee)
-        val newHoldQuantity = oldHoldQuantity.subtract(sellQuantity)
+        val oldBuyInFee = position.buyInFee
+        val newHoldQuantity = oldHoldQuantity.subtract(quantity)
         val newTotalQuantity = newHoldQuantity.add(oldFrozenQuantity)
-        val purchaseCost = oldBuyInFee.multiply(sellQuantity).divide(oldTotalQuantity, 2, RoundingMode.HALF_UP)
+        val purchaseCost = oldBuyInFee.multiply(quantity).divide(oldTotalQuantity, 2, RoundingMode.HALF_UP)
         val profit = sellAmount.subtract(purchaseCost)
         val newBuyInFee = oldBuyInFee.subtract(purchaseCost)
-        val newCostPrice = if (newTotalQuantity.toInt() == 0) BigDecimal.ZERO else newBuyInFee.divide(
+        val newCostPrice = if (newTotalQuantity.toInt() == 0) ZERO else newBuyInFee.divide(
             newTotalQuantity,
             2,
             RoundingMode.HALF_UP
         )
-        balance = BigDecimal.valueOf(balance).add(sellAmount).toDouble()
+        balance += sellAmount
         positionMap[symbol] = Position(
             symbol,
-            newHoldQuantity.toInt(),
+            newHoldQuantity,
             position.frozenQuantity,
-            newBuyInFee.toDouble(),
-            newCostPrice.toDouble(),
+            newBuyInFee,
+            newCostPrice,
             position.localMap
         )
         tradeRecordList.add(
             TradeRecord(
                 tradeTime,
                 symbol, SideEnum.SELL,
-                quantity,
-                price,
+                quantity.toDouble(),
+                price.toDouble(),
                 sellAmount.toDouble(),
                 transferFee.toDouble(),
                 commissionFee.toDouble(),
@@ -168,13 +169,10 @@ class CounterService(
         throw UnsupportedOperationException()
     }
 
-    override fun buy(symbol: Symbol, tradeTime: LocalDateTime, price: Double, quantity: Double) {
-        val balance = BigDecimal.valueOf(balance)
-
+    override fun buy(symbol: Symbol, tradeTime: LocalDateTime, price: BigDecimal, quantity: BigDecimal) {
         // calculate exchange cost
-        val buyQuantity = BigDecimal.valueOf(quantity)
-        val amount = BigDecimal.valueOf(price).multiply(buyQuantity)
-        val transferFee = getTransferFee(symbol, buyQuantity)
+        val amount = price * quantity
+        val transferFee = getTransferFee(symbol, quantity)
         val commissionFee = getCommissionRate(amount)
         val deduct = amount.add(transferFee).add(commissionFee)
 
@@ -186,17 +184,19 @@ class CounterService(
 
         // Increase position
         val position = queryPosition(symbol)
-        val oldHoldQuantity = BigDecimal.valueOf(position.quantity.toLong())
-        val oldFrozenQuantity = BigDecimal.valueOf(position.frozenQuantity.toLong())
-        val oldBuyInFee = BigDecimal.valueOf(position.buyInFee)
+        val oldHoldQuantity = position.quantity
+        val oldFrozenQuantity = position.frozenQuantity
+        val oldBuyInFee = position.buyInFee
         val newBuyInFee = oldBuyInFee.add(deduct)
-        val newHoldQuantity = if (todayAddOneTrade) oldHoldQuantity else oldHoldQuantity.add(buyQuantity)
-        val newFrozenQuantity = if (todayAddOneTrade) oldFrozenQuantity.add(buyQuantity) else oldFrozenQuantity
+        val newHoldQuantity = if (todayAddOneTrade) oldHoldQuantity else oldHoldQuantity.add(quantity)
+        val newFrozenQuantity = if (todayAddOneTrade) oldFrozenQuantity.add(quantity) else oldFrozenQuantity
         val newCostPrice = newBuyInFee.divide(newHoldQuantity.add(newFrozenQuantity), 2, RoundingMode.HALF_UP)
-        this.balance = balance.subtract(deduct).toDouble()
+        balance -= deduct
         positionMap[symbol] = Position(
-            symbol, newHoldQuantity.toInt(),
-            newFrozenQuantity.toInt(), newBuyInFee.toDouble(), newCostPrice.toDouble(),
+            symbol, newHoldQuantity,
+            newFrozenQuantity,
+            newBuyInFee,
+            newCostPrice,
             position.localMap
         )
         tradeRecordList.add(
@@ -204,8 +204,8 @@ class CounterService(
                 tradeTime,
                 symbol,
                 SideEnum.BUY,
-                quantity,
-                price,
+                quantity.toDouble(),
+                price.toDouble(),
                 deduct.toDouble(),
                 transferFee.toDouble(),
                 commissionFee.toDouble(),
@@ -219,7 +219,7 @@ class CounterService(
         return if (transferFeeRate.toDouble() != 0.0 && SymbolUtil.isSSE(symbol.code)) {
             quantity.multiply(transferFeeRate).setScale(2, RoundingMode.HALF_UP)
         } else {
-            BigDecimal.ZERO
+            ZERO
         }
     }
 
@@ -227,7 +227,7 @@ class CounterService(
         return if (commissionRate.toDouble() != 0.0) {
             amount.multiply(commissionRate).setScale(2, RoundingMode.HALF_UP)
         } else {
-            BigDecimal.ZERO
+            ZERO
         }
     }
 

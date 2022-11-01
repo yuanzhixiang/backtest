@@ -1,5 +1,6 @@
 package com.yuanzhixiang.bt.factor.variant;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public abstract class AbstractPeriodFactor implements VariantFactor {
         Price close = factors.getClose();
         Price high = factors.getHigh();
         Price low = factors.getLow();
-        long volume = factors.getVolume();
+        BigDecimal volume = factors.getVolume();
 
         Factors specific = contextService.getFactors(factors.getIdentity(), -1);
         if (specific != null && toMerge(factors, specific)) {
@@ -29,7 +30,7 @@ public abstract class AbstractPeriodFactor implements VariantFactor {
             open = periodFactors.getOpen();
             high = RealPriceFactor.max(specific.getSymbol(), high, periodFactors.getHigh());
             low = RealPriceFactor.min(specific.getSymbol(), low, periodFactors.getLow());
-            volume += periodFactors.getVolume();
+            volume = volume.add(periodFactors.getVolume());
         }
 
         Factors periodFactor = new Factors(getPeriodDataSourceLocal(), factors.getSymbol(), factors.getTradeDate(), open, close, high, low, volume);

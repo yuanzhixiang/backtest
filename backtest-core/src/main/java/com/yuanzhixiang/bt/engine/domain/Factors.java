@@ -21,11 +21,11 @@ public class Factors implements LocalVariable {
 
     private final Identity identity;
 
-    public Factors(Symbol symbol, LocalDateTime tradeDate, Double open, Double close, Double high, Double low, Long volume, BigDecimal adjustment) {
+    public Factors(Symbol symbol, LocalDateTime tradeDate, BigDecimal open, BigDecimal close, BigDecimal high, BigDecimal low, BigDecimal volume, BigDecimal adjustment) {
         this(null, symbol, tradeDate, new Price(open, adjustment), new Price(close, adjustment), new Price(high, adjustment), new Price(low, adjustment), volume);
     }
 
-    public Factors(Local<Symbol, List<Factors>> local, Symbol symbol, LocalDateTime tradeDate, Price open, Price close, Price high, Price low, Long volume) {
+    public Factors(Local<Symbol, List<Factors>> local, Symbol symbol, LocalDateTime tradeDate, Price open, Price close, Price high, Price low, BigDecimal volume) {
         identity = new Identity(local);
         this.symbol = symbol;
         this.tradeDate = tradeDate;
@@ -48,7 +48,7 @@ public class Factors implements LocalVariable {
     /** low price */
     private final Price low;
     /** volume */
-    private final Long volume;
+    private final BigDecimal volume;
 
     public Identity getIdentity() {
         return identity;
@@ -78,7 +78,7 @@ public class Factors implements LocalVariable {
         return low;
     }
 
-    public Long getVolume() {
+    public BigDecimal getVolume() {
         return volume;
     }
 

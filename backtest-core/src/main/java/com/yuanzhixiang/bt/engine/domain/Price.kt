@@ -7,7 +7,7 @@ import java.math.BigDecimal
 /**
  * @author Yuan Zhixiang
  */
-class Price(val price: Double, val adjustment: BigDecimal) : LocalVariable {
+class Price(val price: BigDecimal, val adjustment: BigDecimal) : LocalVariable {
     private var localMap: LocalMap? = null
     override fun getLocalMap(): LocalMap {
         return localMap!!

@@ -136,6 +136,6 @@ public class RealPriceFactor {
     private static BigDecimal getRealPriceForCompute(Price price, BigDecimal latestAdjustment) {
         BigDecimal adjustment = price.getAdjustment();
         BigDecimal realAdjustment = adjustment.divide(latestAdjustment, 4, RoundingMode.HALF_UP);
-        return valueOf(price.getPrice()).multiply(realAdjustment);
+        return price.getPrice().multiply(realAdjustment);
     }
 }

@@ -32,7 +32,7 @@ public class DefaultReporter implements Reporter {
     public DefaultReporter(Configuration configuration) {
         this.configuration = configuration;
         this.symbols = configuration.getSymbolList();
-        this.initialBalance = configuration.getCounter().queryBalance();
+        this.initialBalance = configuration.getCounter().queryBalance().doubleValue();
         path = Paths.get(System.getProperty("user.home") + File.separator + "Desktop" + File.separator + LocalDateTimeUtil.format(LocalDateTime.now(), "yyyy-MM-dd HH:mm:ss"));
     }
 

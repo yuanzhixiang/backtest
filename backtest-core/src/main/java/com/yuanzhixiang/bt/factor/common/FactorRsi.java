@@ -33,19 +33,19 @@ public class FactorRsi implements Factor {
 
     public static class Rsi {
 
-        private final double rsi;
+        private final BigDecimal rsi;
 
         private final Price previousUp;
 
         private final Price previousDown;
 
-        public Rsi(double rsi, Price previousUp, Price previousDown) {
+        public Rsi(BigDecimal rsi, Price previousUp, Price previousDown) {
             this.rsi = rsi;
             this.previousUp = previousUp;
             this.previousDown = previousDown;
         }
 
-        public double getRsi() {
+        public BigDecimal getRsi() {
             return rsi;
         }
 
@@ -113,8 +113,7 @@ public class FactorRsi implements Factor {
                 BigDecimal rsi = up.divide(up.add(down), 4, RoundingMode.HALF_UP).multiply(BigDecimalConstants._100);
 
                 BigDecimal adjustment = specific.getClose().getAdjustment();
-                rsiValue = new Rsi(rsi.doubleValue(), new Price(up.doubleValue(), adjustment),
-                    new Price(down.doubleValue(), adjustment));
+                rsiValue = new Rsi(rsi, new Price(up, adjustment), new Price(down, adjustment));
 
                 VALUE.set(specific, rsiValue);
 
@@ -148,8 +147,7 @@ public class FactorRsi implements Factor {
             BigDecimal rsi = up.divide(up.add(down), 8, RoundingMode.HALF_UP).multiply(BigDecimalConstants._100);
 
             BigDecimal adjustment = specific.getClose().getAdjustment();
-            rsiValue = new Rsi(rsi.doubleValue(), new Price(up.doubleValue(), adjustment),
-                new Price(down.doubleValue(), adjustment));
+            rsiValue = new Rsi(rsi, new Price(up, adjustment), new Price(down, adjustment));
             VALUE.set(specific, rsiValue);
 
             return rsiValue;

@@ -7,6 +7,7 @@ import static com.yuanzhixiang.bt.kit.BigDecimalConstants._2;
 import static com.yuanzhixiang.bt.kit.BigDecimalConstants._25;
 import static com.yuanzhixiang.bt.kit.BigDecimalConstants._27;
 import static com.yuanzhixiang.bt.kit.BigDecimalConstants._8;
+import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.valueOf;
 
 import java.math.BigDecimal;
@@ -131,11 +132,11 @@ public class FactorMacd implements Factor<FactorMacd> {
             // then initialize the first node.
             if (previousFactors == null) {
                 macd = new Macd();
-                macd.originalEmaFast = valueOf(priceClose.getPrice());
-                macd.originalEmaSlow = valueOf(priceClose.getPrice());
-                macd.originalDiff = valueOf(0);
-                macd.originalDea = valueOf(0);
-                macd.originalBar = valueOf(0);
+                macd.originalEmaFast = priceClose.getPrice();
+                macd.originalEmaSlow = priceClose.getPrice();
+                macd.originalDiff = ZERO;
+                macd.originalDea = ZERO;
+                macd.originalBar = ZERO;
                 macd.diff = 0;
                 macd.dea = 0;
                 macd.bar = 0;
@@ -144,7 +145,7 @@ public class FactorMacd implements Factor<FactorMacd> {
             }
 
             // Calculate diff, dea, bar
-            BigDecimal close = valueOf(priceClose.getPrice()).multiply(priceClose.getAdjustment());
+            BigDecimal close = priceClose.getPrice().multiply(priceClose.getAdjustment());
             Macd previousMacd = MACD.get(previousFactors);
             BigDecimal emaFast = previousMacd.originalEmaFast.multiply(EMA_FAST_PREVIOUS_WEIGHTS).add(close.multiply(EMA_FAST_WEIGHTS)).setScale(4, RoundingMode.HALF_UP);
             BigDecimal emaSlow = previousMacd.originalEmaSlow.multiply(EMA_SLOW_PREVIOUS_WEIGHTS).add(close.multiply(EMA_SLOW_WEIGHTS)).setScale(4, RoundingMode.HALF_UP);

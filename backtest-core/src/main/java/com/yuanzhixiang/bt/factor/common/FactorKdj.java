@@ -119,13 +119,13 @@ public class FactorKdj implements Factor {
                     break;
                 }
                 Price highPrice = factors.getHigh();
-                double high = valueOf(highPrice.getPrice()).multiply(highPrice.getAdjustment()).doubleValue();
+                double high = highPrice.getPrice().multiply(highPrice.getAdjustment()).doubleValue();
                 if (maximumPrice - high < 0) {
                     maximumPrice = high;
                 }
 
                 Price lowPrice = factors.getLow();
-                double low = valueOf(lowPrice.getPrice()).multiply(lowPrice.getAdjustment()).doubleValue();
+                double low = lowPrice.getPrice().multiply(lowPrice.getAdjustment()).doubleValue();
                 if (lowestPrice - low > 0) {
                     lowestPrice = low;
                 }
@@ -133,7 +133,7 @@ public class FactorKdj implements Factor {
 
             // Calculate rsv.
             Price closePrice = specific.getClose();
-            BigDecimal close = valueOf(closePrice.getPrice()).multiply(closePrice.getAdjustment());
+            BigDecimal close = closePrice.getPrice().multiply(closePrice.getAdjustment());
             BigDecimal rsv = close.subtract(valueOf(lowestPrice))
                 .divide(valueOf(maximumPrice).subtract(valueOf(lowestPrice)), 4, RoundingMode.HALF_UP)
                 .multiply(_100);
